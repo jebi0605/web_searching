@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="keyword" content="html,google,search,ayang">
+    <meta name="description" content="search at google">
+    <meta name="author" content="아양">
+    <title>Google searching</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+			text-align: center;
+            align-items: start;
+            height: 100vh;
+            margin: 0;
+            background-color: #f9f9f9;
+        }
+        #search-container {
+            text-align: center;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        #search-container input {
+            width: 400px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+		.header {
+            font-weight: bold;
+            position: absolute;
+            top: 10px;
+            left: 10px;
+        }
+        #search-container button {
+            padding: 10px 20px;
+            margin-left: 10px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        #search-container button:hover {
+            background-color: #0056b3;
+        }
+        .form-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        .hidden {
+            display: none; 
+        }
+    </style>
+</head>
+<body>
+    <div id="search-container">
+        <h1>웹 검색</h1>
+        <input type="text" id="search-query" placeholder="여기에 검색하세요..." />
+        <button onclick="performSearch()">검색</button><br>
+		<select id="search-engine">
+			<option value="google">Google</option>
+			<option value="bing">Bing</option>
+			<option value="duckduckgo">DuckDuckGo</option>
+			<!--<option value="naver">Naver</option>-->
+		</select>
+    </div>
+    <div class="form-container">
+        <label for="codeInput">아양레인저 전용 코드 입력:</label><br><br>
+        <input type="text" id="codeInput" placeholder="여기에 코드를 입력하세요...">
+        <button onclick="checkCode()">확인</button>
+    </div>
+    <div id="resultMessage" class="hidden">
+        <h1>에엑따! 너는 아양레인저</h1>
+        <p>여기는 시크릿 페이지다, 이말이에요!</p>
+        <p>멋쥐다~</p>
+    </div>
+    <script>
+        function performSearch() {
+			const query = document.getElementById("search-query").value.trim();
+			const engine = document.getElementById("search-engine").value;
+			if (!query) {
+                alert("검색어를 입력하세요!");
+                return;
+            }
+
+            let searchUrl = "";
+            switch (engine) {
+                case "google":
+                    searchUrl = `https://www.google.com/search?q=${encodeURIComponent(query)}`;
+                    break;
+                case "bing":
+                    searchUrl = `https://www.bing.com/search?q=${encodeURIComponent(query)}`;
+                    break;
+                case "duckduckgo":
+                    searchUrl = `https://duckduckgo.com/?q=${encodeURIComponent(query)}`;
+                    break;
+				/*case "naver":
+					searchUrl = `https://www.naver.com/?q=${encodeURIComponent(query)}`;
+                    break;*/
+                default:
+                    alert("유효하지 않은 검색 엔진입니다.");
+                    return;
+            }
+
+            window.open(searchUrl, "_blank");
+		}
+        function checkCode() {
+            const input = document.getElementById('codeInput').value;
+            const validCode = "아양레인저임";
+
+            if (input === validCode) {
+                // Hide the search container
+                document.getElementById('search-container').classList.add('hidden');
+                // Hide the form container
+                document.querySelector('.form-container').classList.add('hidden');
+                // Show the result message
+                document.getElementById('resultMessage').classList.remove('hidden');
+                alert("우와~맞았다~");
+            } else {
+                alert("다시 시도하셈");
+            }
+        }
+    </script>
+</body>
+</html>
