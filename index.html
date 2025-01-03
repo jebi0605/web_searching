@@ -12,11 +12,11 @@
             font-family: Arial, sans-serif;
             display: flex;
             justify-content: center;
-			text-align: center;
-            align-items: start;
+            align-items: center;
             height: 100vh;
             margin: 0;
             background-color: #f9f9f9;
+            overflow: hidden; /* 키보드 올라올 때 페이지가 움직이는 것을 방지 */
         }
         #search-container {
             text-align: center;
@@ -26,21 +26,23 @@
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
         #search-container input {
-            width: 400px;
+            width: 300px; /* 검색창 길이를 줄임 */
             padding: 10px;
             border: 1px solid #ddd;
             border-radius: 4px;
             font-size: 16px;
         }
-	.header {
-            font-weight: bold;
-            position: absolute;
-            top: 10px;
-            left: 10px;
+        #search-container select {
+            width: 320px; /* 드롭다운 메뉴도 동일하게 조정 */
+            padding: 10px;
+            margin-top: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
         }
         #search-container button {
             padding: 10px 20px;
-            margin-left: 10px;
+            margin-top: 10px;
             background-color: #007bff;
             color: #fff;
             border: none;
@@ -53,12 +55,17 @@
         }
         .form-container {
             position: absolute;
-            top: 80%;
+            bottom: 20px; /* 코드 입력창을 화면 아래 고정 */
             left: 50%;
-            transform: translate(-50%, -50%);
+            transform: translateX(-50%);
+            width: 320px; /* 길이 조정 */
+            background: #fff;
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
         .hidden {
-            display: none; 
+            display: none;
         }
     </style>
 </head>
@@ -67,12 +74,11 @@
         <h1>웹 검색</h1>
         <input type="text" id="search-query" placeholder="여기에 검색하세요..." />
         <button onclick="performSearch()">검색</button><br>
-		<select id="search-engine">
-			<option value="google">Google</option>
-			<option value="bing">Bing</option>
-			<option value="duckduckgo">DuckDuckGo</option>
-			<!--<option value="naver">Naver</option>-->
-		</select>
+        <select id="search-engine">
+            <option value="google">Google</option>
+            <option value="bing">Bing</option>
+            <option value="duckduckgo">DuckDuckGo</option>
+        </select>
     </div>
     <div class="form-container">
         <label for="codeInput">아양레인저 전용 코드 입력:</label><br><br>
@@ -86,9 +92,9 @@
     </div>
     <script>
         function performSearch() {
-			const query = document.getElementById("search-query").value.trim();
-			const engine = document.getElementById("search-engine").value;
-			if (!query) {
+            const query = document.getElementById("search-query").value.trim();
+            const engine = document.getElementById("search-engine").value;
+            if (!query) {
                 alert("검색어를 입력하세요!");
                 return;
             }
@@ -104,32 +110,37 @@
                 case "duckduckgo":
                     searchUrl = `https://duckduckgo.com/?q=${encodeURIComponent(query)}`;
                     break;
-				/*case "naver":
-					searchUrl = `https://www.naver.com/?q=${encodeURIComponent(query)}`;
-                    break;*/
                 default:
                     alert("유효하지 않은 검색 엔진입니다.");
                     return;
             }
 
             window.open(searchUrl, "_blank");
-		}
+        }
+
         function checkCode() {
             const input = document.getElementById('codeInput').value;
             const validCode = "아양레인저임";
 
             if (input === validCode) {
-                // Hide the search container
                 document.getElementById('search-container').classList.add('hidden');
-                // Hide the form container
                 document.querySelector('.form-container').classList.add('hidden');
-                // Show the result message
                 document.getElementById('resultMessage').classList.remove('hidden');
                 alert("우와~맞았다~");
             } else {
                 alert("다시 시도하셈");
             }
         }
+
+        // 안드로이드 키보드가 올라왔을 때, 입력창 위치 고정
+        window.addEventListener('resize', () => {
+            const formContainer = document.querySelector('.form-container');
+            if (window.innerHeight < 500) {
+                formContainer.style.bottom = "100px"; // 키보드 올라올 때 입력창 위치 조정
+            } else {
+                formContainer.style.bottom = "20px"; // 기본 위치로 복구
+            }
+        });
     </script>
 </body>
 </html>
