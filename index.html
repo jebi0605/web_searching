@@ -66,7 +66,7 @@
         }
 
         .form-container {
-            position: absolute; /* JavaScript로 고정 */
+            position: fixed; /* 화면 하단에 고정 */
             bottom: 20px;
             left: 50%;
             transform: translateX(-50%);
@@ -99,12 +99,13 @@
             <option value="google">Google</option>
             <option value="bing">Bing</option>
             <option value="duckduckgo">DuckDuckGo</option>
+            <option value="naver">Naver</option>
         </select>
     </div>
 
     <div class="form-container" id="form-container">
         <label for="codeInput">아양레인저 전용 코드 입력:</label><br><br>
-        <input type="text" id="codeInput" placeholder="여기에 코드를 입력하세요...">
+        <input type="text" id="codeInput" placeholder="여기에 코드를 입력하세요..." onfocus="adjustFormPosition(true)" onblur="adjustFormPosition(false)">
         <button onclick="checkCode()">확인</button>
     </div>
 
@@ -135,6 +136,9 @@
                 case "duckduckgo":
                     searchUrl = `https://duckduckgo.com/?q=${encodeURIComponent(query)}`;
                     break;
+                case "naver":
+                    searchUrl = `https://search.naver.com/search.naver?query=${encodeURIComponent(query)}`;
+                    break;
                 default:
                     alert("유효하지 않은 검색 엔진입니다.");
                     return;
@@ -157,19 +161,15 @@
             }
         }
 
-        // 안드로이드 키보드 대응
-        const formContainer = document.getElementById('form-container');
-        window.addEventListener('resize', () => {
-            const viewportHeight = window.innerHeight;
-            const screenHeight = window.screen.height;
-
-            // 키보드가 올라온 경우
-            if (viewportHeight < screenHeight * 0.7) {
-                formContainer.style.bottom = "120px"; // 키보드와 충돌하지 않도록 위치 조정
+        // 아양레인저 입력창 위치 조정
+        function adjustFormPosition(isFocused) {
+            const formContainer = document.getElementById('form-container');
+            if (isFocused) {
+                formContainer.style.bottom = "120px"; // 입력창 활성화 시 위치 변경
             } else {
-                formContainer.style.bottom = "20px"; // 기본 위치로 복구
+                formContainer.style.bottom = "20px"; // 입력창 비활성화 시 원래 위치로
             }
-        });
+        }
     </script>
 </body>
 </html>
