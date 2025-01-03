@@ -10,36 +10,46 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
             margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
             background-color: #f9f9f9;
-            overflow: hidden; /* 키보드 올라올 때 페이지가 움직이는 것을 방지 */
         }
+
         #search-container {
             text-align: center;
             background: #fff;
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            position: fixed; /* 화면 상단에 고정 */
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 400px;
+            z-index: 1000; /* 다른 요소 위에 표시 */
         }
+
         #search-container input {
-            width: 300px; /* 검색창 길이를 줄임 */
+            width: 90%; /* 검색창 너비를 조정 */
             padding: 10px;
             border: 1px solid #ddd;
             border-radius: 4px;
             font-size: 16px;
         }
+
         #search-container select {
-            width: 320px; /* 드롭다운 메뉴도 동일하게 조정 */
+            width: 95%; /* 드롭다운 메뉴 너비 조정 */
             padding: 10px;
             margin-top: 10px;
             border: 1px solid #ddd;
             border-radius: 4px;
             font-size: 16px;
         }
+
         #search-container button {
             padding: 10px 20px;
             margin-top: 10px;
@@ -50,22 +60,32 @@
             font-size: 16px;
             cursor: pointer;
         }
+
         #search-container button:hover {
             background-color: #0056b3;
         }
+
         .form-container {
-            position: absolute;
-            bottom: 20px; /* 코드 입력창을 화면 아래 고정 */
+            position: fixed; /* 화면 하단에 고정 */
+            bottom: 20px;
             left: 50%;
             transform: translateX(-50%);
-            width: 320px; /* 길이 조정 */
+            width: 95%;
+            max-width: 400px;
             background: #fff;
             padding: 10px;
             border-radius: 8px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
         }
+
         .hidden {
             display: none;
+        }
+
+        #resultMessage {
+            margin-top: 20px;
+            text-align: center;
         }
     </style>
 </head>
@@ -80,20 +100,24 @@
             <option value="duckduckgo">DuckDuckGo</option>
         </select>
     </div>
+
     <div class="form-container">
         <label for="codeInput">아양레인저 전용 코드 입력:</label><br><br>
         <input type="text" id="codeInput" placeholder="여기에 코드를 입력하세요...">
         <button onclick="checkCode()">확인</button>
     </div>
+
     <div id="resultMessage" class="hidden">
         <h1>에엑따! 너는 아양레인저</h1>
         <p>여기는 시크릿 페이지다, 이말이에요!</p>
         <p>멋쥐다~</p>
     </div>
+
     <script>
         function performSearch() {
             const query = document.getElementById("search-query").value.trim();
             const engine = document.getElementById("search-engine").value;
+
             if (!query) {
                 alert("검색어를 입력하세요!");
                 return;
@@ -131,16 +155,6 @@
                 alert("다시 시도하셈");
             }
         }
-
-        // 안드로이드 키보드가 올라왔을 때, 입력창 위치 고정
-        window.addEventListener('resize', () => {
-            const formContainer = document.querySelector('.form-container');
-            if (window.innerHeight < 500) {
-                formContainer.style.bottom = "100px"; // 키보드 올라올 때 입력창 위치 조정
-            } else {
-                formContainer.style.bottom = "20px"; // 기본 위치로 복구
-            }
-        });
     </script>
 </body>
 </html>
